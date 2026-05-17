@@ -1,0 +1,5 @@
+/.data/jellyfin/config/**
+/.data/jellyfin/cache/**
+!/.data/jellyfin/config/.gitkeep
+!/.data/jellyfin/cache/.gitkeep
+.vscode/
