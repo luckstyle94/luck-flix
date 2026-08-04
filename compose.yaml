@@ -1,13 +1,37 @@
 services:
   jellyfin:
-    image: jellyfin/jellyfin:10.11.8
+    image: jellyfin/jellyfin:10.11
     container_name: jellyfin
-    user: "1000:1000"
+    hostname: jellyfin
+
+    user: "${PUID}:${PGID}"
+
+    group_add:
+      - "${RENDER_GID}"
+
+    environment:
+      TZ: "${TZ}"
+      JELLYFIN_PublishedServerUrl: "http://${SERVER_IP}:8096"
+
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+
     ports:
-      - "8096:8096/tcp"
-      - "7359:7359/udp"
+      - "${SERVER_IP}:8096:8096/tcp"
+      - "${SERVER_IP}:7359:7359/udp"
+
     volumes:
-      - ./.data/jellyfin/config:/config
-      - ./.data/jellyfin/cache:/cache
-      - /home/${USER}/Videos:/media:ro
+      - type: bind
+        source: ./.data/jellyfin/config
+        target: /config
+
+      - type: bind
+        source: ./.data/jellyfin/cache
+        target: /cache
+
+      - type: bind
+        source: /videos
+        target: /media
+        read_only: false
+
     restart: unless-stopped

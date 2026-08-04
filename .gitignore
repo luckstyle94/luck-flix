@@ -3,3 +3,4 @@
 !/.data/jellyfin/config/.gitkeep
 !/.data/jellyfin/cache/.gitkeep
 .vscode/
+.env
